@@ -1,12 +1,29 @@
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv   # fetch API_KEYs and SECRET from .env
 import http.client
+import urllib.parse
+import json
 
-latitude = "51.53239000197473"  # example latt/logt set
-longitude = "-0.10646610354395085"
 
 load_dotenv()
 
+location = input("Please enter desired location.\t")
+
+# connect to geocoding API
+geocode_conn = http.client.HTTPSConnection("geocode.xyz")
+geocode_params = urllib.parse.urlencode({
+    'auth': os.getenv('GEOCODE_AUTH'),
+    'locate': location,
+    'json': 1,
+})
+
+geocode_conn.request("GET", "/?{}".format(geocode_params))
+
+geocode_res = geocode_conn.getresponse()
+geocode_json = geocode_res.read()  # reads JSON file from request
+
+
+'''
 # connect to Weather DataHub
 datahub_conn = http.client.HTTPSConnection("rgw.5878-e94b1c46.eu-gb.apiconnect.appdomain.cloud")
 
@@ -28,3 +45,4 @@ with open('dump.json', 'wb') as datahub_dump:
     datahub_dump.write(datahub_json)
     print("Data written to dump.json")
     datahub_dump.close()
+'''
