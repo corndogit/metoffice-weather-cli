@@ -17,7 +17,7 @@ GEOCODE_AUTH=xxxxxxxx
 Run `weather.py` in the console and type a city name when prompted. This will return the 
 latitude and longitude coordinates of the city from the geocode.xyz API, which is then parsed into 
 the GET url for the Met Office DataHub API . The data from this API is dumped into a .json file 
-and contains a trove of weather information about the area.
+and contains a trove of daily weather information about the area.
 
 ## Example data
 
@@ -34,6 +34,7 @@ There is too much data to show in one image - the returning file is approx. 43kb
 human-readable format, starting with a simple .xls spreadsheet
 - Add exception handling for API request timeouts, key errors (e.g. when geocoding
 coordinates for a country) and invalid city names.
+- Decode [Significant Weather Codes](https://www.metoffice.gov.uk/services/data/datapoint/code-definitions) into weather type (e.g. 7 = cloudy)
 
 ### Known Bugs
 

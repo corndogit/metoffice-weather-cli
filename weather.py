@@ -1,13 +1,12 @@
 import os
-from dotenv import load_dotenv   # fetch API_KEYs and SECRET from .env
+from dotenv import load_dotenv  # fetch API_KEYs and SECRET from .env
 import http.client
 import urllib.parse
 import json
 
-
 load_dotenv()
 
-location = input("Please enter desired location:\t")
+location = input("Please enter desired location:\t")  # todo add optional argument for specific countries
 
 # connect to geocoding API
 geocode_conn = http.client.HTTPSConnection("geocode.xyz")
@@ -23,31 +22,53 @@ geocode_res = geocode_conn.getresponse()
 geocode_json = json.loads(geocode_res.read())  # reads JSON file from response
 
 geocode_values = (
-    geocode_json['standard']['city'],
+    geocode_json['standard']['city'],  # todo add exception handling if location has no city (only country specified)
     geocode_json['standard']['countryname'],
     geocode_json['latt'],
     geocode_json['longt']
 )
-print(geocode_values)
 
 # connect to Weather DataHub
 datahub_conn = http.client.HTTPSConnection("rgw.5878-e94b1c46.eu-gb.apiconnect.appdomain.cloud")
 
-headers = {
+datahub_headers = {
     'X-IBM-Client-Id': os.getenv('DATAHUB_API_KEY'),
     'X-IBM-Client-Secret': os.getenv('DATAHUB_SECRET'),
     'accept': "application/json"
-    }
+}
 
+datahub_params = urllib.parse.urlencode({
+    'excludeParameterMetadata': 'true',
+    'includeLocationName': 'true',
+    'latitude': geocode_values[-2],
+    'longitude': geocode_values[-1]
+})
 
-datahub_conn.request("GET", f"/metoffice/production/v0/forecasts/point/hourly?excludeParameterMetadata=false&includeLocationName=true&latitude={geocode_values[2]}&longitude={geocode_values[3]}", headers=headers)
+datahub_conn.request('GET',
+                     '/metoffice/production/v0/forecasts/point/daily?{}'.format(datahub_params),
+                     headers=datahub_headers
+                     )
 
 datahub_res = datahub_conn.getresponse()
-datahub_json = datahub_res.read()
+datahub_json = json.loads(datahub_res.read())  # todo pick useful information out of returned file
 
+time_series = datahub_json['features'][0]['properties']['timeSeries'][1]
 
-# data dump
-with open('dump.json', 'wb') as datahub_dump:
-    datahub_dump.write(datahub_json)
-    print("Data written to dump.json")
-    datahub_dump.close()
+weather_data = {
+    "TimeOfModel": time_series['time'],
+    "SignificantWeatherCode": time_series['daySignificantWeatherCode'],  # todo decode weather codes
+    "MaxTemperature": time_series['dayUpperBoundMaxTemp'],  # degrees Celsius
+    "MinTemperature": time_series['dayLowerBoundMaxTemp'],
+    "ChanceOfPrecipitation": time_series['dayProbabilityOfPrecipitation'],  # %
+    "WindSpeed": time_series['midday10MWindSpeed'],  # m/s
+    "MaxUvIndex": time_series['maxUvIndex']
+}
+print(f"""
+Weather for {geocode_values[0]}, {geocode_values[1]}:
+Weather code: {weather_data['SignificantWeatherCode']}
+Max temp: {round(weather_data['MaxTemperature'])} degrees Celsius
+Min temp: {round(weather_data['MinTemperature'])} degrees Celsius
+Chance of precipitation: {weather_data['ChanceOfPrecipitation']}%
+Wind speed: {round(float(weather_data['WindSpeed'] / 0.44704), 1)} mph
+UV Index: {weather_data['MaxUvIndex']}
+""")

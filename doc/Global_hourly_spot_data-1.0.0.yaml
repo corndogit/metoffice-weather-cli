@@ -1,0 +1,262 @@
+swagger: '2.0'
+info:
+  description: This API provides hourly weather forecast data for a requested coordinate defined by a latitude and longitude. The format of the data is GeoJSON.
+  version: 1.0.0
+  title: Global hourly spot data
+  contact:
+    email: enquiries@metoffice.gov.uk
+    name: Met Office
+    url: https://www.metoffice.gov.uk/about-us/contact
+  x-ibm-name: global-hourly-spot-data-apigw
+basePath: /metoffice/production/v0
+tags:
+  - name: spotdata-hourly-api
+    description: The Spot Data Hourly API
+schemes:
+  - https
+paths:
+  /forecasts/point/hourly:
+    get:
+      tags:
+        - spotdata-hourly-api
+      summary: Find nearest forecast data that matches the request criteria
+      operationId: getHourlyForecastForPointUsingGET_1
+      produces:
+        - application/json
+      parameters:
+        - name: excludeParameterMetadata
+          in: query
+          description: If true, exclude parameter metadata in the response. If false or undefined, the parameter metadata is returned.
+          required: false
+          type: boolean
+        - name: includeLocationName
+          in: query
+          description: If true, include location name in the response. If false or undefined, no location name is returned.
+          required: false
+          type: boolean
+        - name: latitude
+          in: query
+          description: The request latitude value in range -85/+85 expressed as a decimal fraction.
+          required: true
+          type: number
+          maximum: 85
+          exclusiveMaximum: false
+          minimum: -85
+          exclusiveMinimum: false
+          format: double
+        - name: longitude
+          in: query
+          description: The request longitude value in range -180/+180 expressed as a decimal fraction.
+          required: true
+          type: number
+          maximum: 180
+          exclusiveMaximum: false
+          minimum: -180
+          exclusiveMinimum: false
+          format: double
+      responses:
+        '200':
+          description: The request was fulfilled successfully
+          schema:
+            $ref: '#/definitions/SpotForecastFeatureCollection'
+        '400':
+          description: The server could not service the request because it was malformed.
+          schema:
+            $ref: '#/definitions/VndError'
+        '404':
+          description: The server could not service the request because the requested resource did not exist
+          schema:
+            $ref: '#/definitions/VndError'
+        '405':
+          description: The server could not service the request because it does not support the requested HTTP action - only get requests are supported
+          schema:
+            $ref: '#/definitions/VndError'
+        '415':
+          description: The server could not service the request because the media type requested is not supported - this service only exposes json data
+          schema:
+            $ref: '#/definitions/VndError'
+        '500':
+          description: The server encountered an internal error or misconfiguration and was unable to complete the request - this is not a recoverable error for a user of the API
+          schema:
+            $ref: '#/definitions/VndError'
+      deprecated: false
+definitions:
+  Feature:
+    type: object
+    required:
+      - geometry
+      - properties
+      - type
+    properties:
+      type:
+        type: string
+        example: Feature
+        description: The GeoJSON type identifier
+      geometry:
+        description: The GeoJSON representation of the feature point with a type of Point and a latitude/longitude co-ordinates array
+        $ref: '#/definitions/Point'
+      properties:
+        description: All properties associated with the feature
+        $ref: '#/definitions/Properties'
+    title: Feature
+    description: A feature object with mandatory geometry and properties fields
+  Map«string,ParameterDetails»:
+    type: object
+    title: Map«string,ParameterDetails»
+    additionalProperties:
+      $ref: '#/definitions/ParameterDetails'
+  ParameterDetails:
+    type: object
+    properties:
+      description:
+        type: string
+      type:
+        type: string
+      unit:
+        $ref: '#/definitions/Unit'
+    title: ParameterDetails
+  Point:
+    type: object
+    required:
+      - coordinates
+      - type
+    properties:
+      coordinates:
+        type: array
+        description: The longitude, latitude and elevation values for the point
+        items:
+          type: string
+      type:
+        type: string
+        example: Point
+        description: The GeoJSON type identifier
+    title: Point
+  Properties:
+    type: object
+    required:
+      - modelRunDate
+      - requestPointDistance
+      - timeSeries
+    properties:
+      name:
+        type: string
+        example: St Thomas, Devon, South West England, England, GB
+        description: The forecast location name
+      requestPointDistance:
+        type: number
+        description: The distance from the requested point in metres
+      modelRunDate:
+        type: string
+        example: 2019-01-31T12:00Z
+        description: The model run date in UTC
+      timeSeries:
+        type: array
+        description: A time step ordered list  of forecast parameters and associated values
+        items:
+          $ref: '#/definitions/TimeSeries'
+    title: Properties
+  SpotForecastFeatureCollection:
+    type: object
+    required:
+      - features
+      - parameters
+      - type
+    properties:
+      type:
+        type: string
+        example: FeatureCollection
+        description: The GeoJSON type identifier
+      features:
+        type: array
+        description: A list of feature objects
+        items:
+          $ref: '#/definitions/Feature'
+      parameters:
+        type: array
+        description: Forecast parameter metadata for all possible forecast parameters in response - each forecast parameter has a nested object containing a unit of measurement, using standard unit representation as defined by UCUM - http://unitsofmeasure.org/ucum.html - and an optional parameter definition
+        items:
+          $ref: '#/definitions/Map«string,ParameterDetails»'
+    title: SpotForecastFeatureCollection
+    description: A feature collection object, must have a member array of features
+  Symbol:
+    type: object
+    properties:
+      type:
+        type: string
+      value:
+        type: string
+    title: Symbol
+  TimeSeries:
+    type: object
+    required:
+      - time
+    properties:
+      time:
+        type: string
+        example: 2019-01-31T12:00Z
+        description: Time of the forecast in UTC
+      data:
+        type: object
+        description: A map of forecast parameters and associated values
+        additionalProperties:
+          type: number
+    title: TimeSeries
+  Unit:
+    type: object
+    required:
+      - label
+      - symbol
+    properties:
+      label:
+        type: string
+        example: degrees Celsius
+        description: The name of the unit
+      symbol:
+        description: The symbolic notation of the unit
+        $ref: '#/definitions/Symbol'
+    title: Unit
+  VndError:
+    type: object
+    properties:
+      logref:
+        type: string
+      message:
+        type: string
+    title: VndError
+x-ibm-configuration:
+  enforced: true
+  testable: true
+  phase: realized
+  cors:
+    enabled: true
+  type: rest
+  servers:
+    - url: https://rgw.5878-e94b1c46.eu-gb.apiconnect.appdomain.cloud/metoffice/production/v0
+      description: ''
+      type:
+        - Production
+        - Development
+security:
+  - api-key-1: []
+    Client secret: []
+securityDefinitions:
+  Client secret:
+    description: ''
+    in: header
+    name: X-IBM-Client-Secret
+    type: apiKey
+  api-key-1:
+    description: ''
+    in: header
+    name: X-IBM-Client-Id
+    type: apiKey
+x-ibm-comment:
+  - 'AMU version used to port this API: v10.0.3.0-R3-a92316c1526ac5ac8e3ce989cae368c14e11e317-2021-11-10T22:51:52Z'
+  - 'API03: Suffix -apigw appended to API `title` and `x-ibm-name`. For details, see: https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#API_NAME_ADDED_SUFFIX'
+  - 'API06: Changed gateway type to `datapower-api-gateway`.'
+  - 'API14: Ported v5-compatible policies to work with the API Gateway and updated policy versions.'
+  - 'API45: Compatibility toggle: `copy-id-headers-to-message` set to value: `false`, which is the same as the API Gateway default. For details, see: https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#COMPAT_TOGGLE_MATCHES_APIGW_DEFAULT'
+  - 'API45: Compatibility toggle: `return-v5-responses` set to value: `false`, which is the same as the API Gateway default. For details, see: https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#COMPAT_TOGGLE_MATCHES_APIGW_DEFAULT'
+  - 'API61: Set buffering property to true. For details, see: https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#SET_BUFFERING'
+  - 'API24: Removed redundant `parse` policy from the beginning of the assembly. For details, see: https://www.ibm.com/docs/en/api-connect/10.0.x?topic=cadag-messages-generated-during-conversion-apis-datapower-api-gateway#REMOVED_REDUNDANT_FRONT_PARSE'
+host: rgw.5878-e94b1c46.eu-gb.apiconnect.appdomain.cloud
