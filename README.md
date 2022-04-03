@@ -21,12 +21,13 @@ and contains a trove of daily weather information about the area.
 
 ## Example data
 
-###geocode.xyz request as .JSON
+**geocode.xyz request as .JSON:**
 ![geocode.xyz JSON](https://corndog.s-ul.eu/l57ZgJ4i)
 
-###Met Office Weather DataHub request as JSON
+**Met Office Weather DataHub request as JSON:**
 ![met office datahub JSON](https://corndog.s-ul.eu/a4u1qsRi)
-There is too much data to show in one image - the returning file is approx. 43kb and over 1000 lines long.
+
+More data not included in this image.
 
 ##Todo
 
