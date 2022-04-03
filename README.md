@@ -31,6 +31,10 @@ and contains a trove of daily weather information about the area.
 
 More data not included in this image (file is 300+ lines long).
 
+### Running the program
+
+![runtime](https://corndog.s-ul.eu/QKSLqybH.gif)
+
 ## Todo
 
 - Pick 'useful' information out of the Met Office data and present it in a 
