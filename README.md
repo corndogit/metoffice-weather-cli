@@ -21,17 +21,17 @@ and contains a trove of daily weather information about the area.
 
 ## Example data
 
-**geocode.xyz request as .JSON:**
+### geocode.xyz request as .JSON:
 
 ![geocode.xyz JSON](https://corndog.s-ul.eu/l57ZgJ4i)
 
-**Met Office Weather DataHub request as JSON:**
+### Met Office Weather DataHub request as JSON:
 
 ![met office datahub JSON](https://corndog.s-ul.eu/a4u1qsRi)
 
-More data not included in this image.
+More data not included in this image (file is 300+ lines long).
 
-##Todo
+## Todo
 
 - Pick 'useful' information out of the Met Office data and present it in a 
 human-readable format, starting with a simple .xls spreadsheet
