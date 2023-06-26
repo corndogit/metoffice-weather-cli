@@ -37,13 +37,6 @@ More data not included in this image (file is 300+ lines long).
 
 ## Todo
 
-- Pick 'useful' information out of the Met Office data and present it in a 
-human-readable format, starting with a simple .xls spreadsheet
-- Add exception handling for API request timeouts, key errors (e.g. when geocoding
-coordinates for a country) and invalid city names.
-- Decode [Significant Weather Codes](https://www.metoffice.gov.uk/services/data/datapoint/code-definitions) into weather type (e.g. 7 = cloudy)
+- Pick all 'useful' information out of the Met Office data - some is currently omitted
+- Allow program to be run using argument parsing - let the user provide a city name or latitude/longitude co-ords themselves
 
-### Known Bugs
-
-The program throws an exception for names of countries, so only city names 
-can be input.
