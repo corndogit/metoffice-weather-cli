@@ -21,13 +21,13 @@ and contains a trove of daily weather information about the area.
 
 ## Example data
 
-### geocode.xyz request as .JSON:
+### geocode.xyz request as JSON:
 
-![geocode.xyz JSON](.github/assets/datahub_json.png)
+![geocode.xyz JSON](.github/assets/geocode_json.png)
 
 ### Met Office Weather DataHub request as JSON:
 
-![met office datahub JSON](.github/assets/geocode_json.png)
+![met office datahub JSON](.github/assets/datahub_json.png)
 
 More data not included in this image (file is 300+ lines long).
 
