@@ -34,6 +34,13 @@ weathercodes = {
 }
 
 
+def decode_weather_type(code):
+    try:
+        return weathercodes[str(code)]
+    except KeyError:
+        return 'NA'
+
+
 def decode_uv_index(uv_index):
     if uv_index in range(3):
         return 'Low exposure'
