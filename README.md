@@ -23,17 +23,17 @@ and contains a trove of daily weather information about the area.
 
 ### geocode.xyz request as .JSON:
 
-![geocode.xyz JSON](https://corndog.s-ul.eu/l57ZgJ4i)
+![geocode.xyz JSON](.github/assets/datahub_json.png)
 
 ### Met Office Weather DataHub request as JSON:
 
-![met office datahub JSON](https://corndog.s-ul.eu/a4u1qsRi)
+![met office datahub JSON](.github/assets/geocode_json.png)
 
 More data not included in this image (file is 300+ lines long).
 
 ### Running the program
 
-![runtime](https://corndog.s-ul.eu/QKSLqybH.gif)
+![runtime](.github/assets/run_weather_py.gif)
 
 ## Todo
 
