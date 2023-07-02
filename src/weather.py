@@ -1,15 +1,15 @@
 import os
-from dotenv import load_dotenv, find_dotenv  # fetch API_KEYs and SECRET from .env
+from dotenv import load_dotenv, find_dotenv
 import http.client
 import urllib.parse
 import json
 from weathercodes import decode_weather_type, decode_uv_index
 
-load_dotenv(find_dotenv())
-
 
 def get_geolocation(location):
     # connect to geocoding API
+    _check_env_variable_exists('GEOCODE_AUTH')
+
     connection = http.client.HTTPSConnection("geocode.xyz")
     params = urllib.parse.urlencode({
         'auth': os.getenv('GEOCODE_AUTH'),
@@ -34,6 +34,9 @@ def get_weather_info(geocode_dict):
         geocode_dict['latt'],
         geocode_dict['longt']
     )
+
+    _check_env_variable_exists('DATAHUB_API_KEY')
+    _check_env_variable_exists('DATAHUB_SECRET')
 
     # connect to Weather DataHub
     datahub_conn = http.client.HTTPSConnection("rgw.5878-e94b1c46.eu-gb.apiconnect.appdomain.cloud")
@@ -75,6 +78,11 @@ def get_weather_info(geocode_dict):
     return weather_data
 
 
+def _check_env_variable_exists(env_variable):
+    if os.getenv(env_variable) is None:
+        raise ValueError(f"'{env_variable}' environment variable not set, check your .env file")
+
+
 def print_results(data):
     # todo: control which options are printed as determined by args
     print(f"Weather for {data['City']}, {data['Country']}")
@@ -87,6 +95,7 @@ def print_results(data):
 
 
 if __name__ == '__main__':
+    load_dotenv(find_dotenv())
     print("Please enter desired city:")
     stdin = input("> ")
     result = get_weather_info(get_geolocation(stdin))
