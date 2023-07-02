@@ -6,7 +6,7 @@ import json
 from weathercodes import decode_weather_type, decode_uv_index
 
 
-def get_geolocation(location):
+def get_geolocation(location: str):
     # connect to geocoding API
     _check_env_variable_exists('GEOCODE_AUTH')
 
@@ -27,14 +27,7 @@ def get_geolocation(location):
     return geocode_json
 
 
-def get_weather_info(geocode_dict):
-    params = (
-        geocode_dict['standard']['city'],
-        geocode_dict['standard']['countryname'],
-        geocode_dict['latt'],
-        geocode_dict['longt']
-    )
-
+def get_weather_info(city: str, country: str, latt: float, longt: float):
     _check_env_variable_exists('DATAHUB_API_KEY')
     _check_env_variable_exists('DATAHUB_SECRET')
 
@@ -50,8 +43,8 @@ def get_weather_info(geocode_dict):
     datahub_params = urllib.parse.urlencode({
         'excludeParameterMetadata': 'true',
         'includeLocationName': 'true',
-        'latitude': params[2],
-        'longitude': params[3]
+        'latitude': str(latt),
+        'longitude': str(longt)
     })
 
     datahub_conn.request('GET',
@@ -65,8 +58,8 @@ def get_weather_info(geocode_dict):
     time_series = datahub_json['features'][0]['properties']['timeSeries'][1]
 
     weather_data = {
-        "City": params[0],
-        "Country": params[1],
+        "City": city,
+        "Country": country,
         "TimeOfModel": time_series['time'],
         "WeatherType": decode_weather_type(time_series['daySignificantWeatherCode']),
         "MaxTemperature": time_series['dayUpperBoundMaxTemp'],  # degrees Celsius
@@ -98,5 +91,11 @@ if __name__ == '__main__':
     load_dotenv(find_dotenv())
     print("Please enter desired city:")
     stdin = input("> ")
-    result = get_weather_info(get_geolocation(stdin))
+    geolocation = get_geolocation(stdin)
+    result = get_weather_info(
+        geolocation['standard']['city'],
+        geolocation['standard']['countryname'],
+        geolocation['latt'],
+        geolocation['longt']
+    )
     print_results(result)
