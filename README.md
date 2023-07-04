@@ -6,7 +6,7 @@ A CLI tool for fetching and printing weather data from the
 
 ### PyPI
 Open the command line and type `python3 -m pip install metoffice-weather-cli`. You can then run the program anywhere
-by typing `python3 -m metoffice-weather-cli <flags>`.  
+by typing `python3 -m metoffice_weather_cli <flags>`.  
 
 Note: you may need to replace `python3` with your OS's equivalent.
 
@@ -20,7 +20,7 @@ DATAHUB_API_KEY=xxxxxxxx
 DATAHUB_SECRET=xxxxxxxx
 GEOCODE_AUTH=xxxxxxxx
 ```
-Run `metoffice-weather-cli` in the command line (optionally with the `-h` flag) to view the help page.
+Run `python3 -m metoffice_weather_cli` in the command line (optionally with the `-h` flag) to view the help page.
 
 ## Todo
 
