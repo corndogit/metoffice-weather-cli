@@ -26,3 +26,5 @@ Run `python3 -m metoffice_weather_cli` in the command line (optionally with the 
 
 - Pick all 'useful' information out of the Met Office data - some is currently omitted
 - Allow preferences to be set in a config file for the data printed out
+- Switch from .env-based saving of API keys to another format (e.g. JSON) to avoid wiping files containing
+environment variables unrelated to the program

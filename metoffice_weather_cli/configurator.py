@@ -1,4 +1,5 @@
 import os
+import sys
 import textwrap
 from dotenv import load_dotenv
 
@@ -15,6 +16,15 @@ class Configurator:
         Takes 3 inputs from stdin for the geocode.xyz auth token, Met Office Weather DataHub API key and secret,
         which is then written out to a new .env file to use with the program.
         """
+        confirmation = input(textwrap.dedent(f"""\
+        WARNING: this will truncate the file at {os.path.realpath('./.env')} if it exists.
+        Do you wish to continue? (Y/n)
+        """))
+
+        if confirmation.lower() != "y":
+            print("Exiting without saving...")
+            sys.exit(0)
+
         geocode_auth = input("Please enter your geocode.xyz auth token (or press enter to skip): ")
         if geocode_auth != '':
             self.geocode_auth = geocode_auth
