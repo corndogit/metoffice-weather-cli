@@ -1,6 +1,6 @@
 import argparse
 import sys
-
+from configurator import Configurator
 import weather
 from dotenv import load_dotenv
 
@@ -12,34 +12,36 @@ if __name__ == '__main__':
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-c', '--config',
                        action='store_true',
-                       help="Configures the .env file"
+                       help="""Configures the .env file with your geocode.xyz auth token, 
+                       Met Office Weather DataHub API key and secret"""
                        )
     group.add_argument('-s', '--search',
                        action='store',
                        nargs=1,
                        type=str,
-                       metavar='location',
+                       metavar='<location>',
                        help="Fetch and print the weather given the name of a city or town"
                        )
     group.add_argument('-g', '--geocode',
                        action='store',
                        nargs=1,
                        type=str,
-                       metavar='location',
+                       metavar='<location>',
                        help="Fetch and print the latitude and longitude coordinates of a city or town"
                        )
     group.add_argument('-w', '--weather',
                        action='store',
                        nargs=2,
                        type=float,
-                       metavar=('latitude', 'longitude'),
+                       metavar=('<latitude>', '<longitude>'),
                        help="Fetch and print the weather at a set of latitude and longitude coordinates.",
                        )
 
     args = parser.parse_args()
     if args.config and len(sys.argv) > 1:
-        # todo: write the configurator
-        print("Sorry, feature not yet implemented.")
+        cfg = Configurator()
+        print("Running initial setup...")
+        cfg.initial_setup()
         sys.exit(0)
     else:
         load_dotenv()
