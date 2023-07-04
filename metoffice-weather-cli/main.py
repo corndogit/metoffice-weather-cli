@@ -1,10 +1,11 @@
 import argparse
 import sys
-from configurator import Configurator
-import weather
+from .configurator import Configurator
+from . import weather
 from dotenv import load_dotenv
 
-if __name__ == '__main__':
+
+def run():
     parser = argparse.ArgumentParser(
         prog="weather-cli",
         description="A CLI tool for fetching and printing weather data"
