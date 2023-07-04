@@ -1,3 +1,4 @@
+import pytest
 from metoffice_weather_cli.weathercodes import decode_weather_type, decode_uv_index
 
 
