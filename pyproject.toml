@@ -1,6 +1,6 @@
 [project]
 name = "metoffice-weather-cli"
-version = "0.1.0"
+version = "0.1.2"
 authors = [
   { name="corndogit", email="admin@corndogit.dev" },
 ]
@@ -16,3 +16,6 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/corndogit/weather-cli"
 "Bug Tracker" = "https://github.com/corndogit/weather-cli/issues"
+
+[build-system]
+requires = ["python-dotenv>=1.0.0"]
