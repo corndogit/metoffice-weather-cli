@@ -1,6 +1,6 @@
 [project]
 name = "metoffice-weather-cli"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
   { name="corndogit", email="admin@corndogit.dev" },
 ]
@@ -17,3 +17,7 @@ dependencies= ["python-dotenv>=1.0.0",]
 [project.urls]
 "Homepage" = "https://github.com/corndogit/weather-cli"
 "Bug Tracker" = "https://github.com/corndogit/weather-cli/issues"
+
+[project.optional-dependencies]
+dev = ["flake8~=6.0.0"]
+test = ["pytest~=7.4.0",]
