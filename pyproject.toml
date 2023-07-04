@@ -1,6 +1,6 @@
 [project]
 name = "metoffice-weather-cli"
-version = "0.1.2"
+version = "0.1.0"
 authors = [
   { name="corndogit", email="admin@corndogit.dev" },
 ]
