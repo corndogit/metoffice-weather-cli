@@ -12,10 +12,8 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
+dependencies= ["python-dotenv>=1.0.0",]
 
 [project.urls]
 "Homepage" = "https://github.com/corndogit/weather-cli"
 "Bug Tracker" = "https://github.com/corndogit/weather-cli/issues"
-
-[build-system]
-requires = ["python-dotenv>=1.0.0"]
