@@ -33,13 +33,14 @@ class Configurator:
         mode = 'w'
         if not self.env_exists:
             mode = 'x'
-        with open('../.env', mode) as file:
+        with open('./.env', mode) as file:
             file.write(textwrap.dedent(f"""\
+            # Environment variables for metoffice-weather-cli
             GEOCODE_AUTH={self.geocode_auth}
             DATAHUB_API_KEY={self.datahub_api_key}
             DATAHUB_SECRET={self.datahub_secret}
             """))
-            print(f"Saved dotenv file at {os.path.realpath('../.env')}")
+            print(f"Saved dotenv file at {os.path.realpath('./.env')}")
 
 
 if __name__ == '__main__':
