@@ -3,10 +3,11 @@ from dotenv import load_dotenv, find_dotenv
 import http.client
 import urllib.parse
 import json
-from weathercodes import decode_weather_type, decode_uv_index
+from .weathercodes import decode_weather_type, decode_uv_index
 
 
 def get_geolocation(location: str):
+    load_dotenv()
     # connect to geocoding API
     _check_env_variable_exists('GEOCODE_AUTH')
 
@@ -28,6 +29,7 @@ def get_geolocation(location: str):
 
 
 def get_weather_info(city: str, country: str, latt: float, longt: float):
+    load_dotenv()
     _check_env_variable_exists('DATAHUB_API_KEY')
     _check_env_variable_exists('DATAHUB_SECRET')
 
@@ -55,6 +57,8 @@ def get_weather_info(city: str, country: str, latt: float, longt: float):
     datahub_res = datahub_conn.getresponse()
     datahub_json = json.loads(datahub_res.read())
 
+    if 'features' not in datahub_json:
+        raise KeyError("Met Office API error - check that your API key and secret are correct.")
     time_series = datahub_json['features'][0]['properties']['timeSeries'][1]
 
     weather_data = {
@@ -72,7 +76,7 @@ def get_weather_info(city: str, country: str, latt: float, longt: float):
 
 
 def _check_env_variable_exists(env_variable):
-    if os.getenv(env_variable) is None:
+    if os.getenv(env_variable) is None or os.getenv(env_variable) == '':
         raise ValueError(f"'{env_variable}' environment variable not set, check your .env file")
 
 
