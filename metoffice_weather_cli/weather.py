@@ -3,7 +3,7 @@ from dotenv import load_dotenv, find_dotenv
 import http.client
 import urllib.parse
 import json
-from .weathercodes import decode_weather_type, decode_uv_index
+from metoffice_weather_cli.weathercodes import decode_weather_type, decode_uv_index
 
 
 def get_geolocation(location: str):

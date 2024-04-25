@@ -1,7 +1,7 @@
 import argparse
 import sys
-from .configurator import Configurator
-from . import weather
+from metoffice_weather_cli.configurator import Configurator
+from metoffice_weather_cli import weather
 from dotenv import load_dotenv
 
 
