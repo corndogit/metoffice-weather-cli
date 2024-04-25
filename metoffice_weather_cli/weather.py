@@ -31,14 +31,12 @@ def get_geolocation(location: str):
 def get_weather_info(city: str, country: str, latt: float, longt: float):
     load_dotenv()
     _check_env_variable_exists('DATAHUB_API_KEY')
-    _check_env_variable_exists('DATAHUB_SECRET')
 
     # connect to Weather DataHub
-    datahub_conn = http.client.HTTPSConnection("rgw.5878-e94b1c46.eu-gb.apiconnect.appdomain.cloud")
+    datahub_conn = http.client.HTTPSConnection("https://data.hub.api.metoffice.gov.uk")
 
     datahub_headers = {
         'X-IBM-Client-Id': os.getenv('DATAHUB_API_KEY'),
-        'X-IBM-Client-Secret': os.getenv('DATAHUB_SECRET'),
         'accept': "application/json"
     }
 
@@ -50,7 +48,7 @@ def get_weather_info(city: str, country: str, latt: float, longt: float):
     })
 
     datahub_conn.request('GET',
-                         '/metoffice/production/v0/forecasts/point/daily?{}'.format(datahub_params),
+                         '/sitespecific/v0/forecasts/point/daily?{}'.format(datahub_params),
                          headers=datahub_headers
                          )
 

@@ -13,8 +13,8 @@ def run():
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-c', '--config',
                        action='store_true',
-                       help="""Configures the .env file with your geocode.xyz auth token,
-                       Met Office Weather DataHub API key and secret"""
+                       help="""Configures the .env file with your geocode.xyz auth token and
+                       Met Office Weather DataHub API key"""
                        )
     group.add_argument('-s', '--search',
                        action='store',

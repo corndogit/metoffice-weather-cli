@@ -33,10 +33,6 @@ class Configurator:
         if datahub_api_key != '':
             self.datahub_api_key = datahub_api_key
 
-        datahub_secret = input("Please enter your Met Office Weather DataHub API secret (or press enter to skip): ")
-        if datahub_secret != '':
-            self.datahub_secret = datahub_secret
-
         self.generate_dotenv()
 
     def generate_dotenv(self):
@@ -48,7 +44,6 @@ class Configurator:
             # Environment variables for metoffice-weather-cli
             GEOCODE_AUTH={self.geocode_auth}
             DATAHUB_API_KEY={self.datahub_api_key}
-            DATAHUB_SECRET={self.datahub_secret}
             """))
             print(f"Saved dotenv file at {os.path.realpath('./.env')}")
 
