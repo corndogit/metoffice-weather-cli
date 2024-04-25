@@ -33,10 +33,10 @@ def get_weather_info(city: str, country: str, latt: float, longt: float):
     _check_env_variable_exists('DATAHUB_API_KEY')
 
     # connect to Weather DataHub
-    datahub_conn = http.client.HTTPSConnection("https://data.hub.api.metoffice.gov.uk")
+    datahub_conn = http.client.HTTPSConnection("data.hub.api.metoffice.gov.uk")
 
     datahub_headers = {
-        'X-IBM-Client-Id': os.getenv('DATAHUB_API_KEY'),
+        'apikey': os.getenv('DATAHUB_API_KEY'),
         'accept': "application/json"
     }
 
@@ -48,7 +48,7 @@ def get_weather_info(city: str, country: str, latt: float, longt: float):
     })
 
     datahub_conn.request('GET',
-                         '/sitespecific/v0/forecasts/point/daily?{}'.format(datahub_params),
+                         '/sitespecific/v0/point/daily?{}'.format(datahub_params),
                          headers=datahub_headers
                          )
 
