@@ -68,7 +68,15 @@ def get_weather_info(city: str, country: str, latt: float, longt: float):
         "MinTemperature": time_series['dayLowerBoundMaxTemp'],
         "ChanceOfPrecipitation": time_series['dayProbabilityOfPrecipitation'],  # %
         "WindSpeed": time_series['midday10MWindSpeed'],  # m/s
-        "MaxUvIndex": time_series['maxUvIndex']
+        "MaxUvIndex": time_series['maxUvIndex'],
+        "SignificantWeatherCode": str(time_series['daySignificantWeatherCode']),
+        "MeanSeaLevelPressure": time_series['middayMslp'],  # bar
+        "Visibility": time_series['middayVisibility'],  # m
+        "WindDirection": time_series['midday10MWindDirection'],  # bearing
+        "RelativeHumidity": time_series['middayRelativeHumidity'] / 100,  # %
+        "ProbabilityOfSnow": time_series['dayProbabilityOfSnow'] / 100,  # %
+        "ProbabilityOfHail": time_series['dayProbabilityOfHail'] / 100,  # %
+        "ProbabilityOfSferics": time_series['dayProbabilityOfSferics'] / 100  # %
     }
     return weather_data
 
