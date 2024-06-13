@@ -15,8 +15,8 @@ classifiers = [
 dependencies= ["python-dotenv>=1.0.0",]
 
 [project.urls]
-"Homepage" = "https://github.com/corndogit/weather-cli"
-"Bug Tracker" = "https://github.com/corndogit/weather-cli/issues"
+"Homepage" = "https://github.com/corndogit/metoffice-weather-cli"
+"Bug Tracker" = "https://github.com/corndogit/metoffice-weather-cli/issues"
 
 [project.optional-dependencies]
 dev = ["flake8~=6.0.0"]
